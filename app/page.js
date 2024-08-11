@@ -3,6 +3,9 @@ import { Box, Button, Stack, TextField } from '@mui/material'
 import MuiMarkdown from 'mui-markdown'
 import Image from 'next/image'
 import { useState } from 'react'
+import Avatar from '@mui/material/Avatar';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -61,6 +64,7 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      bgcolor={"#1a1a1a"}
     >
       <Stack
         direction="column"
@@ -68,8 +72,11 @@ export default function Home() {
         height="850px"
         border="1px solid black"
         borderRadius={5}
-        p={2}
+        bgcolor="#2a2a2a"
+        p={3}
         spacing={3}
+        color="white"
+        boxShadow="0 4px 12px rgba(0, 0, 0, 1)"
       >
         <Stack
           direction="column"
@@ -85,12 +92,25 @@ export default function Home() {
               justifyContent={
                 message.role === 'assistant' ? 'flex-start' : 'flex-end'
               }
+              //flexDirection={message.role === 'assistant' ? 'row' : 'row-reverse'}
+              alignItems={"center"}
+              gap={1}
             >
+              {message.role === 'assistant' && (
+                <Avatar sx={{ bgcolor: '#007BFF' }}>
+                  <SmartToyIcon />
+                </Avatar>
+              )}
+              {message.role === 'user' && (
+                <Avatar>
+                  <AccountCircleIcon/>
+                </Avatar> // Replace with user avatar
+              )}
               <Box
                 bgcolor={
-                  message.role === 'assistant'
-                    ? 'primary.main'
-                    : 'secondary.main'
+                  message.role === 'assistant' 
+                    ? "#333333"
+                    : '#007BFF'
                 }
                 color="white"
                 borderRadius={16}
@@ -102,14 +122,27 @@ export default function Home() {
             </Box>
           ))}
         </Stack>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} alignItems="center">
           <TextField
-            label="Ask a question"
+            variant='outlined'
+            placeholder ="Ask a question... "
             fullWidth
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') sendMessage()
+            }}
+            sx={{
+              bgcolor: '#444444',
+              borderRadius: '20px',
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  border: 'none',
+                },
+              },
+              input: {
+                color: 'white',
+              },
             }}
           ></TextField>
           <Button variant="contained" onClick={sendMessage} type="submit">
